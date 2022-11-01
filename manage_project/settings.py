@@ -28,6 +28,12 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "applications.Application",
+    "companies",
+    "applications",
+    "interviews",
+    "jobs",
+    "users",
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular"
