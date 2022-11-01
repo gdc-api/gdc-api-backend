@@ -46,14 +46,6 @@ class UserViewsTest(APITestCase):
         }
 
 
-        """ user
-        f_name
-        l_name
-        phone
-        email - pk
-        sobre / bio
-        password
-         """
     def test_create_user(self):
         response = self.client.post(self.register_url, data=self.user)
         expected_status_code = status.HTTP_200_OK
@@ -96,7 +88,7 @@ class UserViewsTest(APITestCase):
         self.assertEqual(response.data["email"][0], "This field is required.")
         self.assertEqual(response.data["password"][0], "This field is required.")
 
-    def test_admin_list_users(self):#verificar
+    def test_admin_list_users(self):
         response = self.client.post(self.register_url, self.user_adm)
         response = self.client.post(self.login_url, self.adm_login)
         expected_status_code = status.HTTP_200_OK
@@ -118,32 +110,18 @@ class UserViewsTest(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
         response = self.client.patch(f'{self.update_url}{user_owner.id}/', data={"l_name": "Owner PATCH"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    def test_update_is_active_with_not_adm(self):
-        user = User.objects.create_user(**self.user)
+      
+    def test_user_cant_list_users(self):
+        user = User.objects.create_user(**self.user_adm)
         token = Token.objects.create(user=user)
-
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + token.key)
-
-        response = self.client.patch(
-            f'{self.update_url}{user.id}/management/', data={"is_active": False})
-
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        response = self.client.get(self.register_url) 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_update_is_active_with_adm(self):
-        adm = User.objects.create_superuser(**self.user_adm)
-        token = Token.objects.create(user=adm)
 
-        user_seller = User.objects.create_user(**self.user)
-
+    def test_admin_can_list_users(self):
+        admin = User.objects.create_superuser(**self.user_adm)
+        token = Token.objects.create(user=admin)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
-
-        deactive_user = {"is_active": False}
-
-        response = self.client.patch(
-            f'{self.update_url}{user_seller.id}/management/', data=deactive_user)
-
+        response = self.client.get(self.register_url) 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["is_active"],
-                         deactive_user["is_active"])
