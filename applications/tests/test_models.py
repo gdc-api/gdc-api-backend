@@ -108,6 +108,7 @@ class TestApplicationModelAndRelations(TestCase):
         """
 
         Application.objects.create(**self.application_data_2)
+        # the first relation is already created on the set up
         self.assertEqual(self.job.applications.count(), 2)
 
     def test_application_can_only_be_in_one_job(self):
