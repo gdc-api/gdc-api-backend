@@ -4,8 +4,11 @@ from django.test import TestCase
 from ..models import Application
 from users.models import User
 from jobs.models import Job
+from interviews.models import Interview
 
 from companies.models import Company
+
+from datetime import datetime
 
 
 class TestApplicationModelAndRelations(TestCase):
@@ -66,6 +69,21 @@ class TestApplicationModelAndRelations(TestCase):
         # data for testing creations with wrong format
         cls.application_data_wrong_format = {"user": None, "job": "cookie"}
 
+        # creates interview
+        cls.interview_data = {
+            "schedule": datetime(2023, 1, 1),
+            "location": "wallstreet",
+            "application": cls.application,
+        }
+
+        cls.interview = Interview.objects.create(**cls.interview_data)
+
+        cls.interview_data_2 = {
+            "schedule": datetime(2023, 2, 2),
+            "location": "timesquare",
+            "application": cls.application,
+        }
+
     def test_application_fields(self):
         """
         checks if creation was successfull
@@ -94,9 +112,46 @@ class TestApplicationModelAndRelations(TestCase):
 
     def test_application_can_only_be_in_one_job(self):
         """
-        checks if after adding application to job 1 and the job 2,
+        checks if after adding application to job 1 and to job 2,
         the application job changes instead of just adding one more relation
         """
 
         self.job_2.applications.add(self.application)
+        self.job_2.save()
+
         self.assertEqual(self.application.job.id, self.job_2.id)
+
+    def test_user_can_have_multiple_applications(self):
+        application_data = {"user": self.user, "job": self.job}
+        Application.objects.create(**application_data)
+
+        self.assertEqual(self.user.applications.count(), 2)
+
+    def test_application_can_only_have_one_user(self):
+        """
+        checks if after adding the same application to user 1 and to user 2,
+        the application user changes instead of just adding one more relation (or breaking)
+        """
+        self.user_2.applications.add(self.application)
+        self.user_2.save()
+
+        self.assertEqual(self.application.user.id, self.user_2.id)
+
+    def test_application_can_have_multiple_interviews(self):
+        """
+        checks if one application can have multiple interviews
+        """
+        Interview.objects.create(**self.interview_data_2)
+        self.assertEqual(self.application.interviews.count(), 2)
+
+    def test_interview_can_only_have_one_application(self):
+        """
+        checks if after adding the same interview to application 1 and to application 2,
+        the interview application changes instead of just adding one more relation (or breaking)
+        """
+
+        application_2 = Application.objects.create(**self.application_data_2)
+        application_2.interviews.add(self.interview)
+        application_2.save()
+
+        self.assertEqual(self.interview.application.id, application_2.id)
