@@ -2,5 +2,6 @@
 from django.db import models
 
 
-class Users(models.Model):
+class User(models.Model):
     ...
+#puxar do abstractuser

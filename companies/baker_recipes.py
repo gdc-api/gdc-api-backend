@@ -38,4 +38,3 @@ duplicated_name_company = Recipe(
     description='Duplicated Store',
     segment='Information Technology'
 )
-
