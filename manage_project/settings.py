@@ -1,6 +1,7 @@
 from pathlib import Path
-import environ
+
 import dj_database_url
+import environ
 
 env = environ.Env(
     DEBUG=(bool, False)
@@ -28,14 +29,15 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "rest_framework.authtoken",
+     "drf_spectacular",
+    "users",
     "applications",
     "companies",
     "interviews",
     "jobs",
-    "users",
-    "rest_framework",
-    "rest_framework.authtoken",
-    "drf_spectacular"
+
 ]
 
 MIDDLEWARE = [

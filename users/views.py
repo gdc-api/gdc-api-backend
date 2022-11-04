@@ -4,6 +4,7 @@ from rest_framework.authentication import TokenAuthentication
 
 from .models import User
 from .permissions import IsAdmin, IsAuthenticated, IsOwner
+from .serializers import UserSerializer
 
 
 class UserView(generics.CreateAPIView):
@@ -16,7 +17,7 @@ class AdminListAllUsersView(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, IsAdmin]
 
-    # serializer_class = UserSerializer
+    serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
