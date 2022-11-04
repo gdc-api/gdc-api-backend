@@ -4,8 +4,12 @@ from django.db import models
 from jobs.models import Job
 from users.models import User
 
+from uuid import uuid4
+
 
 class Application(models.Model):
+    id = models.UUIDField(default=uuid4, primary_key=True, editable=False)
+
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
