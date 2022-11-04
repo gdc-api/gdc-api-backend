@@ -41,7 +41,11 @@ class Job(models.Model):
         default=Category.DEFAULT,
     )
 
+<<<<<<< Updated upstream
     comapany = models.ForeignKey(
+=======
+    company = models.ForeignKey(
+>>>>>>> Stashed changes
         "companies.Company",
         on_delete=models.CASCADE,
         related_name="jobs",
