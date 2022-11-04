@@ -41,7 +41,7 @@ class Job(models.Model):
         default=Category.DEFAULT,
     )
 
-    comapany = models.ForeignKey(
+    company = models.ForeignKey(
         "companies.Company",
         on_delete=models.CASCADE,
         related_name="jobs",
