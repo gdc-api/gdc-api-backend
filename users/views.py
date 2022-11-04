@@ -17,7 +17,7 @@ class AdminListAllUsersView(generics.ListAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, IsAdmin]
 
-    # serializer_class = UserSerializer
+    serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
