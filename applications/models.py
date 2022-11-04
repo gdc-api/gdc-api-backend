@@ -1,7 +1,6 @@
-from pyexpat import model
 from django.db import models
-
 from jobs.models import Job
+from pyexpat import model
 from users.models import User
 
 

@@ -4,6 +4,7 @@ from rest_framework.authentication import TokenAuthentication
 
 from .models import User
 from .permissions import IsAdmin, IsAuthenticated, IsOwner
+from .serializers import UserSerializer
 
 
 class UserView(generics.CreateAPIView):
@@ -24,7 +25,7 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated, IsOwner]
 
-    serializer_class = PatchUserSerializer
+    serializer_class = UserSerializer
     lookup_url_kwarg = 'user_id'
     queryset = User.objects.filter()
 
