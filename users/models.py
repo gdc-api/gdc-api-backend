@@ -10,8 +10,10 @@ class User(AbstractUser):
     password = models.CharField(max_length=127, null=False)
    
 
+
+    USERNAME_FIELD = "email"
+
     REQUIRED_FIELDS = [
-        'email',
         'password'
-        ]
+    ]
     
