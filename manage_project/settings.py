@@ -1,19 +1,18 @@
 from pathlib import Path
 
 import dj_database_url
-import environ
+import os
+import dotenv
 
-env = environ.Env(DEBUG=(bool, False))
+dotenv.load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-environ.Env.read_env(BASE_DIR / ".env")
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = ["gcd-api.herokuapp.com", "127.0.0.1", "localhost"]
 
@@ -32,6 +31,7 @@ THIRD_PARTY_APPS = [
     "rest_framework.authtoken",
     "drf_spectacular",
 ]
+
 PROJECT_APPS = [
     "users",
     "applications",
@@ -89,9 +89,9 @@ WSGI_APPLICATION = "manage_project.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env("POSTGRES_DB"),
-        "USER": env("POSTGRES_USER"),
-        "PASSWORD": env("POSTGRES_PASSWORD"),
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.environ("POSTGRES_PASSWORD"),
         "HOST": "127.0.0.1",
         "PORT": 5432,
     },
@@ -159,7 +159,7 @@ SPECTACULAR_SETTINGS = {
     # OTHER SETTINGS
 }
 
-DATABASE_URL = env("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
     db_from_env = dj_database_url.config(
