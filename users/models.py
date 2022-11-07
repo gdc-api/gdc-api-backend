@@ -17,4 +17,3 @@ class User(AbstractUser):
         'email',
         'password'
     ]
-   
