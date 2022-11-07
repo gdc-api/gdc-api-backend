@@ -16,5 +16,5 @@ class JobDetailView(generics.UpdateAPIView):
 
     serializer_class = JobSerializer
     lookup_url_kwarg = "job_id"
-    queryset = Job.objects.all()
+    queryset = Job.objects.filter()
     ...

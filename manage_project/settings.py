@@ -1,44 +1,47 @@
 from pathlib import Path
 
 import dj_database_url
-import environ
+import os
+import dotenv
 
-env = environ.Env(
-    DEBUG=(bool, False)
-)
+dotenv.load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-environ.Env.read_env(BASE_DIR / '.env')
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-*cz^lh1=gb2hgkotw2l^*nd42ggvhtk-j6prw805)gy&kp%t8m"
-
+SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = os.getenv("DEBUG")
 
-ALLOWED_HOSTS = []
-# ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ["gdc-api.herokuapp.com", "127.0.0.1", "localhost"]
 
 # Application definition
-INSTALLED_APPS = [
+DEFAULT_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+]
+
+THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
-     "drf_spectacular",
+    "drf_spectacular",
+]
+
+PROJECT_APPS = [
     "users",
     "applications",
     "companies",
     "interviews",
     "jobs",
-
 ]
+
+INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + PROJECT_APPS
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -73,26 +76,30 @@ WSGI_APPLICATION = "manage_project.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 
 # Configuração para prod
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": env("POSTGRES_DB"),
-#         "USER": env("POSTGRES_USER"),
-#         "PASSWORD": env("POSTGRES_PASSWORD"),
-#         "HOST": "127.0.0.1",
-#         "PORT": 5432,
-#     }
-# }
+DATABASES = {
+    # "default": {
+    #     "ENGINE": "django.db.backends.postgresql",
+    #     "NAME": os.getenv("POSTGRES_DB"),
+    #     "USER": os.getenv("POSTGRES_USER"),
+    #     "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+    #     "HOST": "127.0.0.1",
+    #     "PORT": 5432,
+    # },
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    },
+}
 
 
 # Password validation
@@ -140,21 +147,22 @@ AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 2,
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"
+    "PAGE_SIZE": 5,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Capstone',
-    'DESCRIPTION': 'API desenvolvida para...',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
+    "TITLE": "GDC API",
+    "DESCRIPTION": "API de gerenciamento de candidaturas",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
     # OTHER SETTINGS
 }
 
-DATABASE_URL = env('DATABASE_URL')
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 if DATABASE_URL:
     db_from_env = dj_database_url.config(
-        default=DATABASE_URL, conn_max_age=500, ssl_require=True)
-    DATABASES['default'].update(db_from_env)
+        default=DATABASE_URL, conn_max_age=500, ssl_require=True
+    )
+    DATABASES["default"].update(db_from_env)

@@ -3,25 +3,28 @@ from rest_framework import serializers
 from .models import User
 
 
+class LoginSerializer(serializers.Serializer):
+    email = serializers.CharField(write_only=True)
+    password = serializers.CharField(write_only=True)
+    ...
+
+
 class UserSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = User
-        
+
         exclude = [
-          'is_superuser',
-          'last_login',
-          'groups',
-          'date_joined',
-          'is_active',
-          'user_permissions',
-          "is_staff"
+            "username",
+            "is_superuser",
+            "last_login",
+            "groups",
+            "user_permissions",
         ]
 
-        read_only_fields = ['id']
         extra_kwargs = {
-          'password': {'write_only': True}
+            "id": {"read_only": True},
+            "password": {"write_only": True},
         }
 
     def create(self, validated_data):
-        return User.objects.create_user(**validated_data)  
+        return User.objects.create_user(**validated_data)
