@@ -11,8 +11,10 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50)
     bio = models.TextField()
 
+
+    USERNAME_FIELD = "email"
+
     REQUIRED_FIELDS = [
-        'email',
         'password'
-        ]
+    ]
     
