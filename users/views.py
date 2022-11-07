@@ -10,7 +10,6 @@ from .permissions import IsAdminOrReadOnly, IsAuthenticated, IsOwnerOrAdmin
 from .serializers import LoginSerializer, UserSerializer
 
 
-<<<<<<< HEAD
 class LoginView(APIView):
     def post(self, request: Request):
         serializer = LoginSerializer(data=request.data)
@@ -31,10 +30,6 @@ class LoginView(APIView):
         )
 
     ...
-=======
-class UserView(generics.CreateAPIView):
-    serializer_class = UserSerializer
->>>>>>> development
 
 
 class UserView(generics.ListCreateAPIView):
@@ -51,9 +46,5 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
 
     serializer_class = UserSerializer
-<<<<<<< HEAD
     lookup_url_kwarg = "user_id"
-=======
-    lookup_url_kwarg = 'user_id'
->>>>>>> development
     queryset = User.objects.filter()
