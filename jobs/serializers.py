@@ -6,10 +6,11 @@ from .models import Job
 
 class JobSerializer(serializers.ModelSerializer):
 
-    company = CompanySerializer(read_only=True)
+    company = CompanySerializer()
 
     class Meta:
         model = Job
         fields = "__all__"
+        read_only_fields = ["id"]
 
     ...
