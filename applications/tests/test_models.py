@@ -49,7 +49,6 @@ class TestApplicationModelAndRelations(TestCase):
             "last_name": "Scramignon",
             "username":"fernando@email.com",
             "email": "fernando@email.com",
-            "bio": "A cool storie",
             "password": "1234",
         }
 
