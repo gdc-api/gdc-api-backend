@@ -5,15 +5,16 @@ from django.db import models
 
 
 class User(AbstractUser):
+  
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    email = models.CharField(max_length=127, unique=True, null=False)
+    username = models.CharField(max_length=127, unique=True)
+    email = models.EmailField(max_length=127,  unique=True)
     password = models.CharField(max_length=127, null=False)
-   
-
-
-    USERNAME_FIELD = "email"
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
 
     REQUIRED_FIELDS = [
+        'email',
         'password'
     ]
-    
+   
