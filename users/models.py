@@ -8,12 +8,5 @@ class User(AbstractUser):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     email = models.CharField(max_length=127, unique=True, null=False)
     password = models.CharField(max_length=127, null=False)
-   
 
-
-    USERNAME_FIELD = "email"
-
-    REQUIRED_FIELDS = [
-        'password'
-    ]
-    
+    REQUIRED_FIELDS = ["email", "password"]    
