@@ -12,6 +12,7 @@ class LoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
+<<<<<<< HEAD
 
         exclude = [
             "username",
@@ -19,6 +20,17 @@ class UserSerializer(serializers.ModelSerializer):
             "last_login",
             "groups",
             "user_permissions",
+=======
+        
+        exclude = [
+          'is_superuser',
+          'last_login',
+          'groups',
+          'date_joined',
+          'is_active',
+          'user_permissions',
+          "is_staff"
+>>>>>>> development
         ]
 
         extra_kwargs = {
