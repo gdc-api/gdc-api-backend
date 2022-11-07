@@ -10,7 +10,7 @@ from .serializers import ApplicationSerializer, ApplicationSerializerCreation
 
 import ipdb
 
-# Create your views here.
+
 class ListCreateApplicationView(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
