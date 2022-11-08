@@ -11,7 +11,6 @@ class ApplicationViewTest(APITestCase):
             "first_name": "Fernando",
             "last_name": "Scramignon",
             "email": "fernando@email.com",
-            "bio": "A cool storie",
             "password": "1234",
         }
 
@@ -52,7 +51,6 @@ class ApplicationViewTest(APITestCase):
             format="json"
         )
         
-        ipdb.set_trace()
         self.assertEqual(self.user.email, self.user.username)
 
     def test_application_listing(self):

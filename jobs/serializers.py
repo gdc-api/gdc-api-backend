@@ -14,3 +14,12 @@ class JobSerializer(serializers.ModelSerializer):
         read_only_fields = ["id"]
 
     ...
+
+class JobWithoutCompanySerializer(serializers.ModelSerializer):
+
+    company = CompanySerializer(read_only=True)
+
+    class Meta:
+        model = Job
+        fields = "__all__"
+        read_only_fields = ["id"]
