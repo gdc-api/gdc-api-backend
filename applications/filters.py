@@ -48,22 +48,3 @@ class ApplicationFilter(filters.FilterSet):
             "job__company__description",
             "job__company__segment"
         ]
-        # fields = {
-        #     "job":[
-        #         "job__url__icontains",
-        #         # "title__icontains",
-        #         # "level__icontains",
-        #         # "category__icontains",
-        #         # "period__icontains",
-        #         # "estimated_pay__exact",
-        #         # "estimated_pay__lte",
-        #         # "estimated_pay__gte",
-        #         # "location__icontains",
-        #         # "contract__icontains",
-
-        #         # "company__id__exact",
-        #         # "company_name__icontains",
-        #         # "company__description__icontains",
-        #         # "comapny__segment__icontains"
-        #     ],
-        # }
