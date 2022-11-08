@@ -31,6 +31,17 @@ class ApplicationFilter(filters.FilterSet):
         field_name="job__contract", lookup_expr="icontains"
     )
 
+
+    job__company__name = filters.CharFilter(
+        field_name="job__company__name", lookup_expr="icontains"
+    )
+    job__company__description = filters.CharFilter(
+        field_name="job__comapny__description", lookup_expr="icontains"
+    )
+    job__company__segment = filters.CharFilter(
+        field_name="job__company__segment", lookup_expr="icontains"
+    )
+
     class Meta:
         model = Application
         fields = [
