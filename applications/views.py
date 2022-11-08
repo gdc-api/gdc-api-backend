@@ -1,14 +1,14 @@
-from django.shortcuts import render
+from rest_framework.exceptions import NotAcceptable
 from rest_framework import generics
 
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
+from .permissions import IsOwner
 
 from .models import Application
 from .serializers import ApplicationSerializer, ApplicationSerializerCreation, ApplicationSerializerCreationWithoutCompanySerializer
 
-import ipdb
 
 
 class ListCreateApplicationView(generics.ListCreateAPIView):
@@ -38,6 +38,20 @@ class CreateApplicationWithCompanyIdView(generics.CreateAPIView):
     def perform_create(self, serializer):
         company_id = self.kwargs["pk"]
         serializer.save(company_id=company_id, user=self.request.user)
+
+class ApplicationDetailView(generics.DestroyAPIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated and IsOwner]
+
+    serializer_class = ApplicationSerializer
+    queryset = Application.objects.all()
+
+    def perform_destroy(self, instance):
+        if not instance.is_active:
+            raise NotAcceptable("Application is already innactive")
+        
+        instance.is_active = False
+        instance.save()
         
 
 
