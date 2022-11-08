@@ -8,6 +8,7 @@ class Interview(models.Model):
     schedule = models.DateTimeField()
     location = models.TextField(blank=True)
     was_aprooved = models.BooleanField(blank=True, default=False)
+    passed = models.BooleanField(blank=True, default=False)
 
     user = models.ForeignKey(
         "users.User",
@@ -24,5 +25,9 @@ class Interview(models.Model):
     def toggle_was_approved(self):
         self.was_aprooved = bool(not self.was_aprooved)
         return self.was_aprooved
+
+    def toggle_passed(self):
+        self.passed = bool(not self.passed)
+        return self.passed
 
     ...
