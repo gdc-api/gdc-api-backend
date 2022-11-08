@@ -6,7 +6,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView, Request, Response, status
 
 from .models import User
-from .permissions import IsAdminOrReadOnly, IsAuthenticated, IsOwnerOrAdmin
+from .permissions import (IsAdminOrReadOnly, IsAuthenticated, IsOwnerOrAdmin,
+                          IsPostOrAdmin)
 from .serializers import LoginSerializer, UserSerializer
 
 
@@ -34,7 +35,7 @@ class LoginView(APIView):
 
 class UserView(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsPostOrAdmin]
     serializer_class = UserSerializer
     queryset = User.objects.all()
     ...
