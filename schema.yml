@@ -1,0 +1,1070 @@
+openapi: 3.0.3
+info:
+  title: GDC API
+  version: 1.0.0
+  description: API de gerenciamento de candidaturas
+paths:
+  /api/applications/:
+    get:
+      operationId: applications_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - applications
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedApplicationSerializerCreationList'
+          description: ''
+    post:
+      operationId: applications_create
+      tags:
+      - applications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationSerializerCreation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ApplicationSerializerCreation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ApplicationSerializerCreation'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationSerializerCreation'
+          description: ''
+  /api/applications/{id}/:
+    delete:
+      operationId: applications_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - applications
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/applications/company/{id}/:
+    post:
+      operationId: applications_company_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - applications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationSerializerCreationWithoutCompany'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ApplicationSerializerCreationWithoutCompany'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ApplicationSerializerCreationWithoutCompany'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationSerializerCreationWithoutCompany'
+          description: ''
+  /api/companies/{id}/:
+    put:
+      operationId: companies_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this company.
+        required: true
+      tags:
+      - companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Company'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Company'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Company'
+        required: true
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+          description: ''
+    patch:
+      operationId: companies_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        description: A UUID string identifying this company.
+        required: true
+      tags:
+      - companies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCompany'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCompany'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCompany'
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Company'
+          description: ''
+  /api/interviews/:
+    get:
+      operationId: interviews_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: schedule
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: schedule__gt
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: schedule__lt
+        schema:
+          type: string
+          format: date-time
+      tags:
+      - interviews
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedInterviewList'
+          description: ''
+    post:
+      operationId: interviews_create
+      tags:
+      - interviews
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Interview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Interview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Interview'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interview'
+          description: ''
+  /api/interviews/{interview_id}/:
+    put:
+      operationId: interviews_update
+      parameters:
+      - in: path
+        name: interview_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - interviews
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Interview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Interview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Interview'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interview'
+          description: ''
+    patch:
+      operationId: interviews_partial_update
+      parameters:
+      - in: path
+        name: interview_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - interviews
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInterview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInterview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInterview'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Interview'
+          description: ''
+  /api/interviews/{interview_id}/toggle/:
+    put:
+      operationId: interviews_toggle_update
+      parameters:
+      - in: path
+        name: interview_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - interviews
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InterviewToggle'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InterviewToggle'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InterviewToggle'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterviewToggle'
+          description: ''
+    patch:
+      operationId: interviews_toggle_partial_update
+      parameters:
+      - in: path
+        name: interview_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - interviews
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInterviewToggle'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInterviewToggle'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInterviewToggle'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterviewToggle'
+          description: ''
+  /api/jobs/{job_id}/:
+    put:
+      operationId: jobs_update
+      parameters:
+      - in: path
+        name: job_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Job'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Job'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+          description: ''
+    patch:
+      operationId: jobs_partial_update
+      parameters:
+      - in: path
+        name: job_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - jobs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedJob'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedJob'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedJob'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Job'
+          description: ''
+  /api/login/:
+    post:
+      operationId: login_create
+      tags:
+      - login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /api/users/:
+    get:
+      operationId: users_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - users
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+    post:
+      operationId: users_create
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/users/{user_id}/:
+    get:
+      operationId: users_retrieve
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - users
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: users_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: users_partial_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUser'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+components:
+  schemas:
+    Application:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+        job:
+          $ref: '#/components/schemas/Job'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        is_active:
+          type: boolean
+      required:
+      - created_at
+      - id
+      - job
+      - user
+    ApplicationSerializerCreation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        job:
+          $ref: '#/components/schemas/Job'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        is_active:
+          type: boolean
+      required:
+      - created_at
+      - id
+      - job
+      - user
+    ApplicationSerializerCreationWithoutCompany:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
+        job:
+          $ref: '#/components/schemas/JobWithoutCompany'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        is_active:
+          type: boolean
+      required:
+      - created_at
+      - id
+      - job
+      - user
+    CategoryEnum:
+      enum:
+      - Front-End
+      - Back-End
+      - Full-Stack
+      - Não definido
+      type: string
+    Company:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+        segment:
+          type: string
+          maxLength: 30
+      required:
+      - description
+      - id
+      - name
+      - segment
+    Interview:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        application:
+          allOf:
+          - $ref: '#/components/schemas/Application'
+          readOnly: true
+        schedule:
+          type: string
+          format: date-time
+        location:
+          type: string
+        was_aprooved:
+          type: boolean
+        passed:
+          type: boolean
+      required:
+      - application
+      - id
+      - schedule
+    InterviewToggle:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        was_aprooved:
+          type: boolean
+          readOnly: true
+        schedule:
+          type: string
+          format: date-time
+          readOnly: true
+        location:
+          type: string
+        passed:
+          type: boolean
+        user:
+          type: string
+          format: uuid
+        application:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - application
+      - id
+      - schedule
+      - user
+      - was_aprooved
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        company:
+          $ref: '#/components/schemas/Company'
+        url:
+          type: string
+          maxLength: 254
+        title:
+          type: string
+          maxLength: 127
+        period:
+          type: string
+          maxLength: 15
+        location:
+          type: string
+          maxLength: 30
+        contract:
+          type: string
+          maxLength: 15
+        estimated_pay:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        level:
+          $ref: '#/components/schemas/LevelEnum'
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+      required:
+      - company
+      - contract
+      - estimated_pay
+      - id
+      - location
+      - period
+      - title
+      - url
+    JobWithoutCompany:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        company:
+          allOf:
+          - $ref: '#/components/schemas/Company'
+          readOnly: true
+        url:
+          type: string
+          maxLength: 254
+        title:
+          type: string
+          maxLength: 127
+        period:
+          type: string
+          maxLength: 15
+        location:
+          type: string
+          maxLength: 30
+        contract:
+          type: string
+          maxLength: 15
+        estimated_pay:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        level:
+          $ref: '#/components/schemas/LevelEnum'
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+      required:
+      - company
+      - contract
+      - estimated_pay
+      - id
+      - location
+      - period
+      - title
+      - url
+    LevelEnum:
+      enum:
+      - Estágio
+      - Treinee
+      - Júnior
+      - Pleno
+      - Sênior
+      - Não definido
+      type: string
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password
+    PaginatedApplicationSerializerCreationList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApplicationSerializerCreation'
+    PaginatedInterviewList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Interview'
+    PaginatedUserList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PatchedCompany:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 50
+        description:
+          type: string
+        segment:
+          type: string
+          maxLength: 30
+    PatchedInterview:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        application:
+          allOf:
+          - $ref: '#/components/schemas/Application'
+          readOnly: true
+        schedule:
+          type: string
+          format: date-time
+        location:
+          type: string
+        was_aprooved:
+          type: boolean
+        passed:
+          type: boolean
+    PatchedInterviewToggle:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        was_aprooved:
+          type: boolean
+          readOnly: true
+        schedule:
+          type: string
+          format: date-time
+          readOnly: true
+        location:
+          type: string
+        passed:
+          type: boolean
+        user:
+          type: string
+          format: uuid
+        application:
+          type: string
+          format: uuid
+          readOnly: true
+    PatchedJob:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        company:
+          $ref: '#/components/schemas/Company'
+        url:
+          type: string
+          maxLength: 254
+        title:
+          type: string
+          maxLength: 127
+        period:
+          type: string
+          maxLength: 15
+        location:
+          type: string
+          maxLength: 30
+        contract:
+          type: string
+          maxLength: 15
+        estimated_pay:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+        level:
+          $ref: '#/components/schemas/LevelEnum'
+        category:
+          $ref: '#/components/schemas/CategoryEnum'
+    PatchedUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        is_staff:
+          type: boolean
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+        email:
+          type: string
+          format: email
+          maxLength: 127
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 127
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        bio:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        is_staff:
+          type: boolean
+          title: Staff status
+          description: Designates whether the user can log into this admin site.
+        is_active:
+          type: boolean
+          title: Active
+          description: Designates whether this user should be treated as active. Unselect
+            this instead of deleting accounts.
+        date_joined:
+          type: string
+          format: date-time
+        email:
+          type: string
+          format: email
+          maxLength: 127
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 127
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        bio:
+          type: string
+      required:
+      - email
+      - first_name
+      - id
+      - last_name
+      - password
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
