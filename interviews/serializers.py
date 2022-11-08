@@ -20,13 +20,7 @@ class InterviewSerializer(serializers.ModelSerializer):
 
 
 class InterviewToggleSerializer(serializers.ModelSerializer):
-
-    was_approved = serializers.SerializerMethodField(read_only=True)
-
-    def get_was_approved(self, obj: Interview):
-        return obj.toggle_was_approved()
-
-    class meta:
+    class Meta:
         model = Interview
         fields = "__all__"
         read_only_fields = [
@@ -35,5 +29,13 @@ class InterviewToggleSerializer(serializers.ModelSerializer):
             "schedule",
             "locations",
         ]
+
+    was_aprooved = serializers.SerializerMethodField(read_only=True)
+
+    def get_was_aprooved(self, obj: Interview):
+        new_status = obj.toggle_was_approved()
+        obj.save()
+
+        return new_status
 
     ...

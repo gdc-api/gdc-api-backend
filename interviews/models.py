@@ -21,7 +21,8 @@ class Interview(models.Model):
         related_name="interviews",
     )
 
-    def toogle_was_approved(self):
-        self.was_aprooved = not self.was_aprooved
+    def toggle_was_approved(self):
+        self.was_aprooved = bool(not self.was_aprooved)
+        return self.was_aprooved
 
     ...
