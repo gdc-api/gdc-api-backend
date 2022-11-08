@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics
 
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 from .models import Application
@@ -13,10 +13,17 @@ import ipdb
 
 class ListCreateApplicationView(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated or IsAdminUser]
 
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializerCreation
+
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return self.queryset
+    
+        queryset = self.queryset.filter(user__id=self.request.user.id)
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
