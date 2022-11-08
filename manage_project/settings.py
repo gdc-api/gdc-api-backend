@@ -27,6 +27,7 @@ DEFAULT_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    "django_filters",
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
@@ -74,28 +75,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "manage_project.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
-
 # Configuração para prod
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB"),
-        "USER": os.getenv("POSTGRES_USER"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": "127.0.0.1",
-        "PORT": 5432,
-    },
+     "default": {
+         "ENGINE": "django.db.backends.postgresql",
+         "NAME": os.getenv("POSTGRES_DB"),
+         "USER": os.getenv("POSTGRES_USER"),
+         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+         "HOST": "127.0.0.1",
+         "PORT": 5432,
+     },
     "sqlite3": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
@@ -150,6 +140,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 5,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
 SPECTACULAR_SETTINGS = {

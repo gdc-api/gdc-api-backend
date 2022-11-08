@@ -17,8 +17,6 @@ from .models import Application
 from .serializers import ApplicationSerializer, ApplicationSerializerCreation, ApplicationSerializerCreationWithoutCompanySerializer
 
 
-
-# Create your views here.
 class ListCreateApplicationView(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated or IsAdminUser]
