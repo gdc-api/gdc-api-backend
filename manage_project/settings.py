@@ -30,7 +30,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
-    "django_filters"
+    "django_filters",
 ]
 
 PROJECT_APPS = [
@@ -77,14 +77,14 @@ WSGI_APPLICATION = "manage_project.wsgi.application"
 # Configuração para prod
 
 DATABASES = {
-     "default": {
-         "ENGINE": "django.db.backends.postgresql",
-         "NAME": os.getenv("POSTGRES_DB"),
-         "USER": os.getenv("POSTGRES_USER"),
-         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-         "HOST": "127.0.0.1",
-         "PORT": 5432,
-     },
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": "127.0.0.1",
+        "PORT": 5432,
+    },
     "sqlite3": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
@@ -157,3 +157,11 @@ if DATABASE_URL:
         default=DATABASE_URL, conn_max_age=500, ssl_require=True
     )
     DATABASES["default"].update(db_from_env)
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
