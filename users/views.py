@@ -6,11 +6,14 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView, Request, Response, status
 
 from .models import User
+
 from .permissions import IsAuthenticated, IsOwnerOrAdmin, IsPostOrAdmin
 from .serializers import LoginSerializer, UserSerializer
 
 
-class LoginView(APIView):
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
     def post(self, request: Request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -35,6 +38,7 @@ class LoginView(APIView):
 class UserView(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsPostOrAdmin]
+
     serializer_class = UserSerializer
     queryset = User.objects.all()
     ...

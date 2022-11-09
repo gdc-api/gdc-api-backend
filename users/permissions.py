@@ -8,6 +8,7 @@ class IsPostOrAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.method == 'POST' or request.user.is_staff
 
+
 class IsAuthenticated(permissions.BasePermission):
     def has_permission(self, request: Request, view: View) -> bool:
         return request.user.is_authenticated

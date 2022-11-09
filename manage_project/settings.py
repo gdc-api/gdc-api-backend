@@ -27,9 +27,11 @@ DEFAULT_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    "django_filters",
     "rest_framework",
     "rest_framework.authtoken",
     "drf_spectacular",
+    "django_filters"
 ]
 
 PROJECT_APPS = [
@@ -138,6 +140,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 5,
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_FILTER_BACKENDS": ["django_filters.rest_framework.DjangoFilterBackend"],
 }
 
 SPECTACULAR_SETTINGS = {
