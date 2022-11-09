@@ -4,6 +4,9 @@ from rest_framework.views import Request, View
 
 class IsAdminPostOrGet(permissions.BasePermission):
     def has_permission(self, request: Request, view: View):
+        if request.user.is_anonymous:
+            return False
+
         return bool(
             request.method == "GET"
             or request.method == "POST"
