@@ -4,9 +4,9 @@ from rest_framework.views import Request, View
 from users.models import User
 
 
-class IsAdminOrPost(permissions.BasePermission):
+class IsPostOrAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
-        return bool(request.method == "POST" or request.user and request.user.is_staff)
+        return request.method == 'POST' or request.user.is_staff
 
 
 class IsAuthenticated(permissions.BasePermission):

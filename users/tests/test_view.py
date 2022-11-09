@@ -1,7 +1,7 @@
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
 from rest_framework.views import status
-from models import User
+from users.models import User
 
 
 class UserViewsTest(APITestCase):
@@ -21,17 +21,17 @@ class UserViewsTest(APITestCase):
         cls.user = {
             "email": "jose@email.com",
             "password": "asdas98012893",
-            "f_name": "Jose",
-            "l_name": "Duarte",
-            "phone": "1112345678",
+            "first_name": "Jose",
+            "last_name": "Duarte",
+   
         }
 
         cls.user_not_owner = {
             "email": "notowner@email.com",
             "password": "asdas98012893",
-            "f_name": "Not",
-            "l_name": "Owner",
-            "phone": "1112345678",
+            "first_name": "Not",
+            "last_name": "Owner",
+   
         }
 
 
@@ -48,7 +48,7 @@ class UserViewsTest(APITestCase):
 
     def test_create_user(self):
         response = self.client.post(self.register_url, data=self.user)
-        expected_status_code = status.HTTP_200_OK
+        expected_status_code = status.HTTP_201_CREATED
         result_status_code = response.status_code
         self.assertEqual(expected_status_code, result_status_code)
 
@@ -59,40 +59,36 @@ class UserViewsTest(APITestCase):
         result_status_code = response.status_code
 
         self.assertEqual(expected_status_code, result_status_code)
-        self.assertEqual(response.data["f_name"][0], "This field is required.")
-        self.assertEqual(response.data["l_name"][0], "This field is required.")
-        self.assertEqual(response.data["phone"][0], "This field is required.")
+        self.assertEqual(response.data["first_name"][0], "This field is required.")
+        self.assertEqual(response.data["last_name"][0], "This field is required.")
         self.assertEqual(response.data["email"][0], "This field is required.")
-        self.assertEqual(response.data["sobre"][0], "This field is required.")
         self.assertEqual(response.data["password"][0], "This field is required.")
 
     def test_login_user(self):
-        response = self.client.post(self.register_url, self.user)
-        response = self.client.post(self.login_url, self.user_login)
-
+        self.client.post(self.register_url, self.user, format="json")
+        login = self.client.post(self.login_url, self.user_login, format="json")
         expected_status_code = status.HTTP_200_OK
-        result_status_code = response.status_code
-
+        result_status_code = login.status_code
         self.assertEqual(expected_status_code, result_status_code)
-        self.assertIn("token", response.data)
+        self.assertIn("token", login.data)
 
 
-    def test_login_wrong_keys(self):
-        response = self.client.post(self.register_url, self.user)
-        response = self.client.post(self.login_url, data={})
+    def test_login_without_keys(self):
+        self.client.post(self.register_url, self.user)
+        login = self.client.post(self.login_url, data={})
 
         expected_status_code = status.HTTP_400_BAD_REQUEST
-        result_status_code = response.status_code
+        result_status_code = login.status_code
 
         self.assertEqual(expected_status_code, result_status_code)
-        self.assertEqual(response.data["email"][0], "This field is required.")
-        self.assertEqual(response.data["password"][0], "This field is required.")
+        self.assertEqual(login.data["email"][0], "This field is required.")
+        self.assertEqual(login.data["password"][0], "This field is required.")
 
     def test_admin_list_users(self):
-        response = self.client.post(self.register_url, self.user_adm)
-        response = self.client.post(self.login_url, self.adm_login)
+        self.client.post(self.register_url, self.user_adm, format="json")
+        login = self.client.post(self.login_url, self.adm_login, format="json")
         expected_status_code = status.HTTP_200_OK
-        result_status_code = response.status_code
+        result_status_code = login.status_code
         self.assertEqual(expected_status_code, result_status_code)
 
     def test_update_by_not_owner(self):
@@ -101,14 +97,14 @@ class UserViewsTest(APITestCase):
         not_owner = User.objects.create_user(**self.user_not_owner)
         token_not_owner = Token.objects.create(user=not_owner)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token_not_owner.key)
-        response = self.client.patch(f'{self.update_url}{user_owner.id}/', data={"l_name": "Not owner PATCH"})
+        response = self.client.patch(f'{self.update_url}{user_owner.id}/', data={"last_name": "Not owner PATCH"})
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_update_by_owner(self):
         user_owner = User.objects.create_user(**self.user)
         token = Token.objects.create(user=user_owner)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
-        response = self.client.patch(f'{self.update_url}{user_owner.id}/', data={"l_name": "Owner PATCH"})
+        response = self.client.patch(f'{self.update_url}{user_owner.id}/', data={"last_name": "Owner PATCH"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
       
     def test_user_cant_list_users(self):
