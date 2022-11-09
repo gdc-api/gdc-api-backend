@@ -10,7 +10,6 @@ from .models import Application
 from .serializers import ApplicationSerializer, ApplicationSerializerCreation, ApplicationSerializerCreationWithoutCompanySerializer
 
 
-
 class ListCreateApplicationView(generics.ListCreateAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated or IsAdminUser]
@@ -21,12 +20,13 @@ class ListCreateApplicationView(generics.ListCreateAPIView):
     def get_queryset(self):
         if self.request.user.is_staff:
             return self.queryset
-    
+
         queryset = self.queryset.filter(user__id=self.request.user.id)
         return queryset
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
 
 class CreateApplicationWithCompanyIdView(generics.CreateAPIView):
     authentication_classes = [TokenAuthentication]
@@ -39,6 +39,7 @@ class CreateApplicationWithCompanyIdView(generics.CreateAPIView):
         company_id = self.kwargs["pk"]
         serializer.save(company_id=company_id, user=self.request.user)
 
+
 class ApplicationDetailView(generics.DestroyAPIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated and IsOwner]
@@ -49,9 +50,6 @@ class ApplicationDetailView(generics.DestroyAPIView):
     def perform_destroy(self, instance):
         if not instance.is_active:
             raise NotAcceptable("Application is already innactive")
-        
+
         instance.is_active = False
         instance.save()
-        
-
-
