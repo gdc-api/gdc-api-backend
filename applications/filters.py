@@ -32,13 +32,13 @@ class ApplicationFilter(filters.FilterSet):
     )
 
 
-    job__company__name = filters.CharFilter(
+    job__company__name_icontains = filters.CharFilter(
         field_name="job__company__name", lookup_expr="icontains"
     )
-    job__company__description = filters.CharFilter(
+    job__company__description_icontains = filters.CharFilter(
         field_name="job__comapny__description", lookup_expr="icontains"
     )
-    job__company__segment = filters.CharFilter(
+    job__company__segment_icontains = filters.CharFilter(
         field_name="job__company__segment", lookup_expr="icontains"
     )
 
