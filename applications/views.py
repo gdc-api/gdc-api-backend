@@ -1,11 +1,18 @@
-from rest_framework.exceptions import NotAcceptable
 from rest_framework import generics
 
+# exceptions
+from rest_framework.exceptions import NotAcceptable
+
+# filters
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import ApplicationFilter
+
+# authentication
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
-
 from .permissions import IsOwner
 
+# models and serializers
 from .models import Application
 from .serializers import ApplicationSerializer, ApplicationSerializerCreation, ApplicationSerializerCreationWithoutCompanySerializer
 
@@ -16,6 +23,9 @@ class ListCreateApplicationView(generics.ListCreateAPIView):
 
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializerCreation
+
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = ApplicationFilter
 
     def get_queryset(self):
         if self.request.user.is_staff:
