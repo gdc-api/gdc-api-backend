@@ -21,12 +21,11 @@ class ApplicationSerializer(serializers.ModelSerializer):
 
 
 class ApplicationSerializerCreation(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
     job = JobSerializer()
 
     class Meta:
         model = Application
-        fields = "__all__"
+        exclude = ["user"]
         read_only_fields = ["created_at", "id"]
 
     def create(self, validated_data):
@@ -47,12 +46,11 @@ class ApplicationSerializerCreation(serializers.ModelSerializer):
 
 
 class ApplicationSerializerCreationWithoutCompanySerializer(serializers.ModelSerializer):
-    user = UserSerializer(read_only=True)
     job = JobWithoutCompanySerializer()
 
     class Meta:
         model = Application
-        fields = "__all__"
+        exclude = ["user"]
         read_only_fields = ["created_at", "id"]
 
     def create(self, validated_data):
