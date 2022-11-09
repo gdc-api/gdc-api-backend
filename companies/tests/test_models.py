@@ -54,16 +54,6 @@ class CompaniesTestModel(TestCase):
 
         self.assertEqual(max_length, None)
 
-    def test_description_field_must_not_be_null_or_blank(self):
-        is_null = self.response._meta.get_field("description").null
-        is_blank = self.response._meta.get_field("description").blank
-
-        self.assertEqual(is_null, False)
-        self.assertEqual(is_blank, False)
-
-        with self.assertRaises(IntegrityError):
-            baker.make_recipe('companies.invalid_company_description')
-
     def test_segment_field_must_have_max_length_defined(self):
         max_length = self.response._meta.get_field("segment").max_length
 

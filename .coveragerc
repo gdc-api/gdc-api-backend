@@ -1,0 +1,9 @@
+[run]
+source = .
+omit = 
+    venv/*
+    manage_project/*
+    manage.py
+
+[report]
+show_missing = True
