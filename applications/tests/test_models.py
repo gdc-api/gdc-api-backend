@@ -72,6 +72,7 @@ class TestApplicationModelAndRelations(TestCase):
             "schedule": datetime(2023, 1, 1),
             "location": "wallstreet",
             "application": cls.application,
+            "user":cls.user
         }
 
         cls.interview = Interview.objects.create(**cls.interview_data)
@@ -80,6 +81,7 @@ class TestApplicationModelAndRelations(TestCase):
             "schedule": datetime(2023, 2, 2),
             "location": "timesquare",
             "application": cls.application,
+            "user":cls.user
         }
 
     def test_application_fields(self):
