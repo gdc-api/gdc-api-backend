@@ -133,7 +133,6 @@ class ApplicationViewTest(APITestCase):
             format="json"
         )
 
-        self.assertIn("user", response.json())
         self.assertIn("job", response.json())
         self.assertIn("company", response.json()['job'])
 
@@ -228,39 +227,6 @@ class ApplicationViewTest(APITestCase):
         response = self.client.post(
             self.list_create_url,
             self.application,
-            format="json"
-        )
-
-        self.assertEqual(response.status_code, 400)
-
-    def test_it_should_not_be_possible_to_duplicate_the_company_name(self):
-        self.client.post(
-            self.create_user_url,
-            self.user_data,
-            format="json"
-        )
-
-        login = self.client.post(
-            self.login_url,
-            self.user_login_data,
-            format="json"
-        )
-
-        token = login.json()['token']
-
-        self.client.credentials(
-            HTTP_AUTHORIZATION=f"Token {token}"
-        )
-
-        self.client.post(
-            self.list_create_url,
-            self.application,
-            format="json"
-        )
-
-        response = self.client.post(
-            self.list_create_url,
-            self.duplicated_company,
             format="json"
         )
 
@@ -400,7 +366,6 @@ class ApplicationViewTest(APITestCase):
             format="json"
         )
 
-        self.assertIn("user", response.json())
         self.assertIn("job", response.json())
         self.assertIn("company", response.json()['job'])
 
