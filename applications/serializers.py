@@ -36,10 +36,7 @@ class ApplicationSerializerCreation(serializers.ModelSerializer):
         job_data["company"] = company
         job = Job.objects.create(**job_data)
 
-        application_data = {
-            "user": validated_data["user"],
-            "job": job
-        }
+        application_data = {"user": validated_data["user"], "job": job}
 
         application = Application.objects.create(**application_data)
         return application
@@ -68,10 +65,7 @@ class ApplicationSerializerCreationWithoutCompanySerializer(serializers.ModelSer
         job_data = validated_data["job"]
         job = Job.objects.create(**job_data, company=company)
 
-        application_data = {
-            "user": user,
-            "job": job
-        }
+        application_data = {"user": user, "job": job}
 
         application = Application.objects.create(**application_data)
         return application
