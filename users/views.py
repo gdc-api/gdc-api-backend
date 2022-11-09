@@ -10,7 +10,9 @@ from .permissions import IsAdminOrPost, IsAuthenticated, IsOwnerOrAdmin
 from .serializers import LoginSerializer, UserSerializer
 
 
-class LoginView(APIView):
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
+
     def post(self, request: Request):
         serializer = LoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

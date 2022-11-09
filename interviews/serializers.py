@@ -32,7 +32,7 @@ class InterviewToggleSerializer(serializers.ModelSerializer):
 
     was_aprooved = serializers.SerializerMethodField(read_only=True)
 
-    def get_was_aprooved(self, obj: Interview):
+    def get_was_aprooved(self, obj: Interview) -> bool:
         new_status = obj.toggle_was_approved()
         obj.save()
 
