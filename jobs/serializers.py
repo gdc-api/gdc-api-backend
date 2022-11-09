@@ -15,6 +15,7 @@ class JobSerializer(serializers.ModelSerializer):
 
     ...
 
+
 class JobWithoutCompanySerializer(serializers.ModelSerializer):
 
     company = CompanySerializer(read_only=True)
