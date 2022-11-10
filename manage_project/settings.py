@@ -29,6 +29,7 @@ DEFAULT_APPS = [
 THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
+    "django_crontab",
     "drf_spectacular",
     "django_filters",
 ]
@@ -165,3 +166,5 @@ EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = os.getenv("EMAIL_PORT")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+CRONJOBS = [("0 0 * * *", "django.core.management.call_command", ["check_passed"])]
