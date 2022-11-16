@@ -1,6 +1,6 @@
 import ipdb
 from applications.models import Application
-from applications.serializers import ApplicationSerializer
+from applications.serializers import ApplicationSerializerCreation
 from rest_framework import serializers
 from users.serializers import UserSerializer
 
@@ -9,7 +9,7 @@ from .models import Interview
 
 class InterviewSerializer(serializers.ModelSerializer):
 
-    application = ApplicationSerializer(read_only=True)
+    application = ApplicationSerializerCreation(read_only=True)
 
     class Meta:
         model = Interview
