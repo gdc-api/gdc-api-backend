@@ -167,4 +167,7 @@ EMAIL_PORT = os.getenv("EMAIL_PORT")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
-CRONJOBS = [("0 0 * * *", "django.core.management.call_command", ["check_passed"])]
+CRONJOBS = [
+    ("0 6 * * *", "django.core.management.call_command", ["noitfy"]),
+    ("0 0 * * *", "django.core.management.call_command", ["check_passed"]),
+]
